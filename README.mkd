@@ -1,0 +1,22 @@
+The Autovalidator: A Client-Side Validation Framework built on jQuery
+====================
+
+The Autovalidator is a client side validation framework built on the jQuery framework. It's design draws heavily from the jQuery UI framework and the Ruby ActiveRecord Validation system.
+
+How Does it Work?
+------------
+
+The Autovalidator is more of a framework than it is a complete solution. It doesn't come with default handling, and it comes with only a minimum set of built in HTML5 based validations. The Autovalidator instead comes with a framework for registering validations and handling errors in the best way for your application.
+
+It's easier to show than to tell. Check out the examples for a better sense of how The Autovalidator works.
+
+Known Issues
+------------
+
+We don't handle internationalization of error messages with the included validations. 
+Documentation is lacking.
+
+Contact
+------------
+
+Want something? Please let me know! You can find me at [the gorgon lab](http://www.thegorgonlab.com)

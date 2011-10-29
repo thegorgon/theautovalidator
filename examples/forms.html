@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link href="../css/forms.css" media="screen" rel="stylesheet" type="text/css" />
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js" type="application/javascript"></script>
+    <script src="../js/jquery.autovalidator.js" type="application/javascript"></script>
+    <script src="../js/example.js" type="application/javascript"></script>
+  </head>
+  <body class='site projects' id='site_projects_autovalidator'>
+    <h1>The Autovalidator</h1>
+    <div class='general'>
+      <p>The Autovalidator is a client side validation framework built on the jQuery framework. It's design draws heavily from the jQuery UI framework and the Ruby ActiveRecord Validation system.</p>
+      <p>The Autovalidator is more of a framework than it is a complete solution. It doesn't come with default handling, and it comes with only a minimum set of built in HTML5 based validations. The Autovalidator instead comes with a framework for registering validations and handling errors in the best way for your application.</p>
+      <p>It's easier to show than to tell. Check out the examples below for a better sense of how The Autovalidator works.</p>
+    </div>
+    <div class='example clearfix' id='example1'>
+      <div class='describe'>
+        <h3>Individual Input Errors</h3>
+        <p>The most basic example.</p>
+        <p>The core philosophy behind The Autovalidator is that validation should be customized to match each application. As such, The Autovalidator doesn't come with any default error handling; how you display your errors is up to you and your design. Even in this simple example, therefore, we must define a "change" handler to handle validation state changes.</p>
+        <p>The Autovalidator exposes a validation change event to change your display to match the current validation state. The validation change event provides access to the input target, current status, validation object that caused the change, and error message. Depending on your application, you may want to use this information in different ways.</p>
+        <p>
+          <a class="hidesrc" data-toggle-class="withsrc" href="#" rel=".example">Hide Source</a>
+          <a class="showsrc" data-toggle-class="withsrc" href="#" rel=".example">View Source</a>
+        </p>
+      </div>
+      <ul>
+        <form action='#' id='individual' method='POST'>
+          <li>
+            <label for='required'>required :</label>
+            <input aria-label='required' id='required' name='required' placeholder='required field' required='true' type='text' />
+            <span class='errors'></span>
+          </li>
+          <li>
+            <label for='email'>email :</label>
+            <input aria-label='email' id='email' name='email' placeholder='email field' required='true' type='email' />
+            <span class='errors'></span>
+          </li>
+          <li>
+            <button type='submit'>
+              submit
+            </button>
+          </li>
+        </form>
+      </ul>
+      <div class='source'>
+        <h3>Example Source</h3>
+        <code class='block'>$('#example1 form').autovalidator({&#x000A;  change: function(event, validator) {&#x000A;    var container = $(event.target).parent();&#x000A;    container.removeClass('invalid').removeClass('valid').removeClass('loading').addClass(event.status);&#x000A;    container.find('.errors').html(event.status == "loading" ? "loading..." : event.message || "");&#x000A;  }&#x000A;});&#x000A;</code>
+      </div>
+    </div>
+    <div class='example clearfix' id='example2'>
+      <div class='describe'>
+        <h3>Form Errors</h3>
+        <p>As an example, here's an alternative handling of the change event.</p>
+        <p>
+          <a class="hidesrc" data-toggle-class="withsrc" href="#" rel=".example">Hide Source</a>
+          <a class="showsrc" data-toggle-class="withsrc" href="#" rel=".example">View Source</a>
+        </p>
+      </div>
+      <ul>
+        <form action='#' id='form_errors' method='POST'>
+          <li>
+            <label for='long'>long :</label>
+            <input aria-label='long' id='long' minlength='10' name='long' placeholder='long field' type='text' />
+          </li>
+          <li>
+            <label for='numbers'>only numbers :</label>
+            <input aria-label='numbers' id='numbers' name='numbers' pattern='\d+' placeholder='numbers' type='text' />
+          </li>
+          <li class='error-messages'></li>
+          <li>
+            <button type='submit'>
+              submit
+            </button>
+          </li>
+        </form>
+      </ul>
+      <div class='source'>
+        <h3>Example Source</h3>
+        <code class='block'>$('#example2 form').autovalidator({&#x000A;  change: function(event, validator) {&#x000A;    var container = $(event.target).parent(),&#x000A;      errors = validator.errors();            &#x000A;    container.removeClass('invalid').removeClass('valid').removeClass('loading').addClass(event.status);&#x000A;&#x000A;    if (errors.length > 0) {&#x000A;      $(this).find('.error-messages').html(errors[0]);&#x000A;    } else {&#x000A;      $(this).find('.error-messages').html('');            &#x000A;    }&#x000A;  &#x000A;  }&#x000A;});&#x000A;</code>
+      </div>
+    </div>
+    <div class='example clearfix' id='example3'>
+      <div class='describe'>
+        <h3>Custom Validations (Credit Card)</h3>
+        <p>Ok, but those were easy, what about something a bit more complicated.</p>
+        <p>
+          Client side credit card validation can save you and your customer a huge amount of hassle. There are several different validations to run, some of which are much more complex than a simple HTML5 validation. The Autovalidator allows custom validation at both form specific or global levels. Every form has a validation list that includes all the global validations as well as custom registered validations.
+        </p>
+        <p>
+          The order in which validations run can be important, so validation lists register validations by name and enable registration before or after existing validations. Validations can also be replaced, or unregistered either globally or in a specific instance.
+        </p>
+        <p>
+          Validations are defined by their name, an error message, a jQuery selector, and a test function. The test function is called on input fields matching the selector. In your test functions, simply call <code>this.validity(element, validity, options)</code> to set the validity of the test element. The change event will be triggered with the error message for the validation. Validation objects provide a great deal of flexibility to match any possible validation.
+        </p>
+        <p>
+          <a class="hidesrc" data-toggle-class="withsrc" href="#" rel=".example">Hide Source</a>
+          <a class="showsrc" data-toggle-class="withsrc" href="#" rel=".example">View Source</a>
+        </p>
+      </div>
+      <ul>
+        <form action='#' id='ccform' method='POST'>
+          <li>
+            <label for='credit-card-number'>number :</label>
+            <input aria-label='number' id='required' name='credit-card-number' placeholder='credit card number' required='true' type='text' />
+            <span class='errors'></span>
+          </li>
+          <li>
+            <label for='expiration-month'>expiration :</label>
+            <select id='expiration-month' name='expiration-month'>
+              <option value='1'>January</option>
+              <option value='2'>February</option>
+              <option value='3'>March</option>
+              <option value='4'>April</option>
+              <option value='5'>May</option>
+              <option value='6'>June</option>
+              <option value='7'>July</option>
+              <option value='8'>August</option>
+              <option value='9'>September</option>
+              <option value='10'>October</option>
+              <option value='11'>November</option>
+              <option value='11'>December</option>
+            </select>
+            <select id='expiration-year' name='expiration-year'>
+              <option value='2011'>2011</option>
+              <option value='2012'>2012</option>
+              <option value='2013'>2013</option>
+              <option value='2014'>2014</option>
+              <option value='2015'>2015</option>
+            </select>
+            <span class='errors'></span>
+          </li>
+          <li>
+            <button type='submit'>
+              submit
+            </button>
+          </li>
+        </form>
+      </ul>
+      <div class='source'>
+        <h3>Example Source</h3>
+        <code class='block'>$('#example3 form').autovalidator({&#x000A;  change: function(event, validator) {&#x000A;    var container = $(event.target).parent();&#x000A;    container.removeClass('invalid').removeClass('valid').removeClass('loading').addClass(event.status);&#x000A;    container.find('.errors').html(event.status == "loading" ? "loading..." : event.message || "");&#x000A;  }&#x000A;});&#x000A;&#x000A;$('#example3 form').autovalidator('registerEach', [{&#x000A;  name: 'luhn',&#x000A;  selector: '[name=credit-card-number]',&#x000A;  message: function() {&#x000A;    return "please double check your credit card number";&#x000A;  },&#x000A;  test: function(element) {&#x000A;    var sum = 0, flip = true, i, digit, value = element.val();&#x000A;    for (i = value.length - 1; i >=0; i--) {&#x000A;      digit = parseInt(value.charAt(i), 10);&#x000A;      sum += (flip = flip ^ true) ? Math.floor((digit * 2)/10) + Math.floor(digit * 2 % 10) : digit;&#x000A;    }&#x000A;    this.validity(element, sum % 10 === 0);&#x000A;  }&#x000A;},&#x000A;{&#x000A;  name: 'expiration',&#x000A;  selector:'[name^=expiration-]',&#x000A;  message: function() {&#x000A;    return "looks like your card is expired?";&#x000A;  },&#x000A;  onChange: false,&#x000A;  test: function(element) {&#x000A;    var yearField, monthField, year, month, validity, now = (new Date());&#x000A;    if (element.attr('name') == 'expiration-month') {&#x000A;      yearField = element.siblings('[name=expiration-year]');&#x000A;      monthField = element;&#x000A;    } else if (element.attr('name') == 'expiration-year') {&#x000A;      monthField = element.siblings('[name=expiration-month]');&#x000A;      yearField = element;&#x000A;    }&#x000A;    year = yearField.val() - 0;&#x000A;    month = monthField.val() - 0;&#x000A;    validity = year > now.getFullYear() || (year === now.getFullYear() && month > now.getMonth() + 1);&#x000A;    this.validity(monthField, validity);&#x000A;    this.validity(yearField, validity);&#x000A;  }&#x000A;}]);&#x000A;</code>
+      </div>
+    </div>
+    <div class='example clearfix' id='example4'>
+      <div class='describe'>
+        <h3>Server Side Validation</h3>
+        <p>Because the test function action is to call a method on the validation rather than returning a value, asynchronous validation is possible. The Autovalidator also uses a validation state, "loading", to represent a changing validation state during asynchronous validation. Just call <code>this.loading(element)</code> in your test function before making any asynchronous calls.</p>
+        <p>
+          <a class="hidesrc" data-toggle-class="withsrc" href="#" rel=".example">Hide Source</a>
+          <a class="showsrc" data-toggle-class="withsrc" href="#" rel=".example">View Source</a>
+        </p>
+      </div>
+      <ul>
+        <form action='#' id='server_form' method='POST'>
+          <li>
+            <label for='email'>email :</label>
+            <input aria-label='artist' id='server-validated' name='email' placeholder='enter the name of a musician' required='true' type='text' />
+            <span class='errors'></span>
+          </li>
+          <li>
+            <button type='submit'>
+              submit
+            </button>
+          </li>
+        </form>
+      </ul>
+      <div class='source'>
+        <h3>Example Source</h3>
+        <code class='block'>$('#example4 form').autovalidator({&#x000A;  change: function(event, validator) {&#x000A;    var container = $(event.target).parent();&#x000A;    container.removeClass('invalid').removeClass('valid').removeClass('loading').addClass(event.status);&#x000A;    container.find('.errors').html(event.status == "loading" ? "loading..." : event.message || "");&#x000A;  }&#x000A;});&#x000A;&#x000A;$('#example4 form').autovalidator('register', {&#x000A;  name: "server_check",&#x000A;  selector: "#server-validated",&#x000A;  onSubmit: false,&#x000A;  message: "cannot find ${name} '${val}' amongst Yahoo artists",&#x000A;  test: function(element) {&#x000A;    var val = element.val(),&#x000A;      self = this,&#x000A;      error = function() {&#x000A;        self.validity(element, false);&#x000A;      };&#x000A;    this.loading(element);&#x000A;    $.ajax({&#x000A;      data: {q: "select * from music.artist.search where keyword='" + val + "'", format: "json"},&#x000A;      url: "http://query.yahooapis.com/v1/public/yql",&#x000A;      dataType: 'jsonp',&#x000A;      success: function(data) {&#x000A;        if (data.query.count - 0 > 0) {&#x000A;          self.validity(element, true);&#x000A;        } else {&#x000A;          error();&#x000A;        }&#x000A;      }, error: error&#x000A;    });&#x000A;  }&#x000A;});</code>
+      </div>
+    </div>
+  </body>
+</html>
