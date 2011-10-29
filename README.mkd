@@ -10,6 +10,136 @@ The Autovalidator is more of a framework than it is a complete solution. It does
 
 It's easier to show than to tell. Check out the examples for a better sense of how The Autovalidator works.
 
+Usage
+------------
+
+The Autovalidator is used similar to a jQuery UI widget. To initialize an Autovalidator instance simply call :
+
+    jQuery('form').autovalidator(options);
+
+Once an Autovalidator has been initialized, methods can be sent to the Autovalidator by sending a string to the above method :
+
+    jQuery('form').autovalidator('method', argument1, argument2);
+    
+The `option` method enables the setting and getting of options. See Methods and Options for more information.
+
+Methods
+------------
+
+The following methods are supported :
+
+`option(key, value)`: Set or get an option. Set the option `key` to `value` or return the value of `key` option if no value is provided. See Options for a list of valid options.
+
+`validate(options)`: Run validations and return whether or not the validator is valid. Options will be passed on to the run method. 
+
+`valid`: Is the current form valid?
+
+`run(options)`: Run validations. Options will be passed on to the validation test functions. In addition, certain validations are defined to be run only on input change or form submit. The keys `change` and `submit` are boolean options that set which validations should be run.
+
+`errors`: Return array of input error messages.
+
+`validations`: Return Validation List for this validator instance.
+
+For all the following validation list methods, `validation` can be either a Validation object or a set of options for a Validation object. See Validations for more information.
+
+`register(validation)`: Register the Validation `validation` at the end of the Validation List to be run after all other validations. 
+
+`replace(name, validation)`: Replace the currently registered validation named `name` with the new validation.
+
+`registerBefore(name, validation)`: Register the validation to run before the currently registered validation with name `name`.
+
+`registerAfter(name, validation)`: Register the validation to run after the currently registered validation with name `name`.
+
+`registerEach(validations)`: Register each of the validations in `validations` array.
+
+`describe`: Log a description of the Validation List to the `console`.
+
+Options
+------------
+
+Currently there are only event related options available.
+
+`change` : A change event handler with the signature `function(event, validator)`. Runs on any validation changes.
+
+`create` : An event handler for the create event with the signature `function(event, validator)`. Runs on initial creation of the instance.
+
+`run` : An event handler for the run event with the signature `function(event, validator)`. Runs anytime the validations are run.
+
+Please contact me should you find you want the script updated to allow certain customizations to be accessible via options.
+
+Events
+------------
+
+There are three events that are triggered in the life of an Autovalidator:
+
+`create` : Runs on initial creation of the instance. Event name : `autovalidatorcreate`. 
+
+`change`: Runs on any validation state changes. Event name : `autovalidatorchange`. 
+
+The change event contains the following relevant data :
+  `target`: The element that changed status.
+  `message`: The relevant error message.
+  `valid`: Is the element valid?
+  `status`: What is the new validation status. One of 'invalid', 'valid', or 'loading'.
+  `validation`: The validation object that changed the status.
+
+`run`: Runs anytime the validations are run. Event name : `autovalidatorrun`.
+
+There are three ways to bind event listeners to an event. As an example, we'll use the `change` event.
+
+You can bind on create using the options object :
+
+    $('form').autovalidator({
+      change: function(event, validator) {
+        ...
+      }
+    })
+
+You can bind after the fact using the `option` method :
+
+    $('form').autovalidator('option', 'change', function(event, validator) {
+      ...
+    });
+    
+Or you can bind to the relevant jQuery event :
+
+    $('form').bind('autovalidatorchange', function(event, validator) {
+      
+    });
+    
+Validations
+------------
+
+Core to the validator actions is the Validation List, an ordered named list of Validation objects.
+
+Validation objects constructed using the `$.Validation` class. 
+
+    validation = new $.Validation(options)
+
+The following options are accepted :
+
+`selector`: A jQuery selector, only inputs (input, select, or textarea fields) that match this selector will be tested.
+
+`message`: The error message. 
+
+Error messages can be either a string or a function returning a string error message with signature `function(element)`. Within the function `this` will be set to the validation object. 
+
+If the error message is a string, certain tokens will be automatically replaced, allowing message customization. The following tokens are supported :
+
+  `${name}`: The field name.
+  `${val}`: The field value.
+  `${attr|key}`: The value of attribute `key`.
+
+`onChange`: Should we run this validation on change?
+
+`onSubmit`: Should we run this validation on submit?
+
+`test`: The test function.
+
+A function with signature `function(element, options)`, where element is the element being tested and options are the options sent to the validations run method. Within the function, `this` will be equal to the validation object.
+
+The function should call `this.validity(element, validity)` to set the validity of the element. It can also call `this.loading(element)` to set the validation status of an element to 'loading', useful for asynchronous validations.
+
 Known Issues
 ------------
 
@@ -19,4 +149,4 @@ Documentation is lacking.
 Contact
 ------------
 
-Want something? Please let me know! You can find me at [the gorgon lab](http://www.thegorgonlab.com)
+Questions? Need something? Please let me know! You can find me at [the gorgon lab](http://www.thegorgonlab.com)
