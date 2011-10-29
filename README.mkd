@@ -136,7 +136,7 @@ If the error message is a string, certain tokens will be automatically replaced,
 
 `test`: The test function.
 
-A function with signature `function(element, options)`, where element is the element being tested and options are the options sent to the validations run method. Within the function, `this` will be equal to the validation object.
+Test functions should be a function with signature `function(element, options)`, where element is the element being tested and options are the options sent to the validations run method. Within the function, `this` will be equal to the validation object.
 
 The function should call `this.validity(element, validity)` to set the validity of the element. It can also call `this.loading(element)` to set the validation status of an element to 'loading', useful for asynchronous validations.
 
