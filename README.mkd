@@ -23,6 +23,12 @@ Once an Autovalidator has been initialized, methods can be sent to the Autovalid
     
 The `option` method enables the setting and getting of options. See Methods and Options for more information.
 
+Unfortunately, it can be annoying to get return values using the method call as it returns an array of return values instead of just one. This is because every jQuery object is actually an array and it returns a value for each object.
+
+To get around this annoyance, you can directly access the Autovalidator instance stashed in the element's data :
+
+    jQuery('form').data('autovalidator');
+
 Methods
 ------------
 
