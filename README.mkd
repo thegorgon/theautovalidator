@@ -40,19 +40,7 @@ The following methods are supported :
 
 `validations`: Return Validation List for this validator instance.
 
-For all the following validation list methods, `validation` can be either a Validation object or a set of options for a Validation object. See Validations for more information.
-
-`register(validation)`: Register the Validation `validation` at the end of the Validation List to be run after all other validations. 
-
-`replace(name, validation)`: Replace the currently registered validation named `name` with the new validation.
-
-`registerBefore(name, validation)`: Register the validation to run before the currently registered validation with name `name`.
-
-`registerAfter(name, validation)`: Register the validation to run after the currently registered validation with name `name`.
-
-`registerEach(validations)`: Register each of the validations in `validations` array.
-
-`describe`: Log a description of the Validation List to the `console`.
+In addition, a Validator responds to all of the Validation List methods. See Validation List for a list of these methods. In each case, the `validator` argument will be set to the validator object and validations will be registered for this validation only.
 
 Options
 ------------
@@ -116,7 +104,11 @@ Validation objects constructed using the `$.Validation` class.
 
     validation = new $.Validation(options)
 
+Validations can then be registered into a Validation List. See Validation List for more information.
+
 The following options are accepted :
+
+`name`: name of the validation. See ValidationList for more information.
 
 `selector`: A jQuery selector, only inputs (input, select, or textarea fields) that match this selector will be tested.
 
@@ -139,6 +131,45 @@ If the error message is a string, certain tokens will be automatically replaced,
 Test functions should be a function with signature `function(element, options)`, where element is the element being tested and options are the options sent to the validations run method. Within the function, `this` will be equal to the validation object.
 
 The function should call `this.validity(element, validity)` to set the validity of the element. It can also call `this.loading(element)` to set the validation status of an element to 'loading', useful for asynchronous validations.
+
+The following validations come with The Autovalidator by default :
+
+`required`: Applied on inputs with the HTML5 `required` attribute. Requires the input have some value.
+ 
+`pattern`: Applied on inputs with the HTML5 `pattern` attribute. Requires the input value to match the Regular Expression in the `pattern` attribute.
+
+`email`: A special case of the `pattern` validation. Applied on inputs with the `type` attribute equal to 'email'. Requires the input value to match an email Regular Expression. You can change this regular expression by setting `$.Validation.settings.emailRegex`.
+
+`length`: Applied on inputs with the HTML5 attributes `minlength` or `maxlength`. Requires the value of this input to be between `minlength` and `maxlength` characters long.
+
+`numeric`: Applied on inputs with the HTML5 attributes `min` or `max`. Requires the numeric value of this input to be between `min` and `max`.
+
+There are also a few validations defined in the examples. Feel free to peruse these to get a better sense of how to define validations.
+
+Validation Lists
+------------
+
+Validation Lists are an ordered association of name to value. 
+
+Validations are named to allow manipulation of the order validations are run. Once a validation runs and is invalid, successive validations will not be run. This is done so that (for example) a required email field will first demand input before demanding email formatted input. This also makes the order of the validations important.
+
+Every Validator instance has a Validation List that is generated off the Global validation list. The Global Validation List can be accessed via `$.Validation.Global`.
+
+Validation lists respond to the following methods :
+
+For all the following validation list methods, `validation` can be either a Validation object or a set of options for a Validation object. See Validations for more information. Also `validator` is an optional argument that if provided will associate the validation object with the validator. This association is necessary for event triggering.
+
+`register(validation, validator)`: Register the Validation `validation` at the end of the Validation List to be run after all other validations. 
+
+`replace(name, validation, validator)`: Replace the currently registered validation named `name` with the new validation.
+
+`registerBefore(name, validation, validator)`: Register the validation to run before the currently registered validation with name `name`.
+
+`registerAfter(name, validation, validator)`: Register the validation to run after the currently registered validation with name `name`.
+
+`registerEach(validations, validator)`: Register each of the validations in `validations` array.
+
+`describe`: Log a description of the Validation List to the `console`.
 
 Known Issues
 ------------
