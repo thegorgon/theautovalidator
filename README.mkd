@@ -38,13 +38,13 @@ The following methods are supported :
 
 `validate(options)`: Run validations and return whether or not the validator is valid. Options will be passed on to the run method. 
 
-`valid`: Is the current form valid?
+`valid()`: Is the current form valid?
 
 `run(options)`: Run validations. Options will be passed on to the validation test functions. In addition, certain validations are defined to be run only on input change or form submit. The keys `change` and `submit` are boolean options that set which validations should be run.
 
-`errors`: Return array of input error messages.
+`errors()`: Return array of input error messages.
 
-`validations`: Return Validation List for this validator instance.
+`validations()`: Return the Validation List for this validator instance.
 
 In addition, a Validator responds to all of the Validation List methods. See Validation List for a list of these methods. In each case, the `validator` argument will be set to the validator object and validations will be registered for this validation only.
 
@@ -70,12 +70,7 @@ There are three events that are triggered in the life of an Autovalidator:
 
 `change`: Runs on any validation state changes. Event name : `autovalidatorchange`. 
 
-The change event contains the following relevant data :
-  `target`: The element that changed status.
-  `message`: The relevant error message.
-  `valid`: Is the element valid?
-  `status`: What is the new validation status. One of 'invalid', 'valid', or 'loading'.
-  `validation`: The validation object that changed the status.
+The change event contains the following relevant data : `target`: The element that changed status, `message`: The relevant error message, `valid`: Is the element valid?, `status`: What is the new validation status. One of 'invalid', 'valid', or 'loading', `validation`: The validation object that changed the status.
 
 `run`: Runs anytime the validations are run. Event name : `autovalidatorrun`.
 
@@ -106,7 +101,7 @@ Validations
 
 Core to the validator actions is the Validation List, an ordered named list of Validation objects.
 
-Validation objects constructed using the `$.Validation` class. 
+Validation objects are constructed using the `$.Validation` class. 
 
     validation = new $.Validation(options)
 
@@ -122,11 +117,7 @@ The following options are accepted :
 
 Error messages can be either a string or a function returning a string error message with signature `function(element)`. Within the function `this` will be set to the validation object. 
 
-If the error message is a string, certain tokens will be automatically replaced, allowing message customization. The following tokens are supported :
-
-  `${name}`: The field name.
-  `${val}`: The field value.
-  `${attr|key}`: The value of attribute `key`.
+If the error message is a string, certain tokens will be automatically replaced, allowing message customization. The following tokens are supported : `${name}`: The field name, `${val}`: The field value, `${attr|key}`: The value of attribute `key`.
 
 `onChange`: Should we run this validation on change?
 
