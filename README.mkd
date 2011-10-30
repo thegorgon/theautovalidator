@@ -8,7 +8,7 @@ How Does it Work?
 
 The Autovalidator is more of a framework than it is a complete solution. It doesn't come with default handling, and it comes with only a minimum set of built in HTML5 based validations. The Autovalidator instead comes with a framework for registering validations and handling errors in the best way for your application.
 
-It's easier to show than to tell. Check out the examples for a better sense of how The Autovalidator works.
+It's easier to show than to tell. Check out [the examples](http://www.thegorgonlab.com/projects/autovalidator) for a better sense of how The Autovalidator works.
 
 Usage
 ------------
