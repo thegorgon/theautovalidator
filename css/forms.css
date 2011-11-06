@@ -4,7 +4,7 @@ code {
   color: #666;
   background: white;
 }
-code.block {
+pre code {
   overflow: auto;
   display: block;
   border: 1px solid #666;
@@ -15,22 +15,33 @@ h1 {
 p {
   margin: 10px 0; }
 .example {
-  margin: 0 0 30px 0;
-  font-size: 12px; }
+  margin: 0 0 30px 0 }
+  .example table {
+    margin: 20px 0; }
+    .example table td {
+      border-bottom: 1px solid #ededed;
+      padding: 5px; }
+    .example table td.code {
+      font-size: 12px;
+      vertical-align: middle;
+      background: #fff; }
+    .example table td.annotate {
+      font-size: 12px;
+      padding-left: 20px;
+      background: transparent; }
   .example p {
     margin: 5px 0; }
   .example ul {
     margin: 20px 0 0;
     list-style: none; }
-  .example .source, .example .hidesrc {
+  .example pre, .example .hidesrc {
     display: none; }
   .example.withsrc .showsrc {
     display: none; }
-  .example.withsrc .source, .example.withsrc .hidesrc {
+  .example.withsrc pre, .example.withsrc .hidesrc {
     display: block; }
 li {
-  margin: 10px;
-  height: 30px; }
+  margin: 10px; }
 label {
   padding-right: 10px;
   font-weight: bold;

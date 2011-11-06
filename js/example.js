@@ -5,8 +5,9 @@ $(document).ready(function(e) {
     $this.parents($this.attr('rel')).toggleClass($this.attr('data-toggle-class'));
   });
   
-  $('#example1 form').autovalidator({
-    name: 1,
+  $('form#example1').autovalidator();
+
+  $('form#example2').autovalidator({
     change: function(event, validator) {
       var container = $(event.target).parent();
       container.removeClass('invalid').removeClass('valid').removeClass('loading').addClass(event.status);
@@ -14,48 +15,44 @@ $(document).ready(function(e) {
     }
   });
 
-  $('#example2 form').autovalidator({
-    name: 2,
-    change: function(event, validator) {
-      var container = $(event.target).parent(),
-        errors = validator.errors();            
-      container.removeClass('invalid').removeClass('valid').removeClass('loading').addClass(event.status);
+  $('form#example3').autovalidator();
+  $('form#example3').autovalidator("option", "change", function(event, validator) {
+    var container = $(event.target).parent(),
+      errors = validator.errors();            
+    container.removeClass('invalid').removeClass('valid').removeClass('loading').addClass(event.status);
 
-      if (errors.length > 0) {
-        $(this).find('.error-messages').html(errors[0]);
-      } else {
-        $(this).find('.error-messages').html('');            
-      }
-
+    if (errors.length > 0) {
+      $(this).addClass("invalid");
+      $(this).find('.error-messages').html(errors[0]);
+    } else {
+      $(this).removeClass("invalid");
+      $(this).find('.error-messages').html('');
     }
   });
-
-  $('#example3 form').autovalidator({
-    name: 3,
-    change: function(event, validator) {
-      var container = $(event.target).parent();
-      container.removeClass('invalid').removeClass('valid').removeClass('loading').addClass(event.status);
-      container.find('.errors').html(event.status == "loading" ? "loading..." : event.message || "");
-    }
-  });
-
-  $('#example3 form').autovalidator('registerEach', [{
+  
+  $.Validation.Global.register({
     name: 'luhn',
     selector: '[name=credit-card-number]',
-    message: function() {
-      return "please double check your credit card number";
-    },
+    message: "please double check your ${name}",
     test: function(element) {
       var sum = 0, flip = true, i, digit, value = element.val();
       for (i = value.length - 1; i >=0; i--) {
         digit = parseInt(value.charAt(i), 10);
         sum += (flip = flip ^ true) ? Math.floor((digit * 2)/10) + Math.floor(digit * 2 % 10) : digit;
       }
-
       this.validity(element, sum % 10 === 0);
     }
-  },
-  {
+  });
+  
+  $('form#example4').autovalidator({
+    change: function(event, validator) {
+      var container = $(event.target).parent();
+      container.removeClass('invalid').removeClass('valid').removeClass('loading').addClass(event.status);
+      container.find('.errors').html(event.status == "loading" ? "loading..." : event.message || "");
+    }
+  });
+
+  $('form#example4').autovalidator('register', {
     name: 'expiration',
     selector:'[name^=expiration-]',
     message: function() {
@@ -77,9 +74,9 @@ $(document).ready(function(e) {
       this.validity(monthField, validity);
       this.validity(yearField, validity);
     }
-  }]);
-
-  $('#example4 form').autovalidator({
+  });
+        
+  $('form#example5').autovalidator({
     name: 4,
     change: function(event, validator) {
       var container = $(event.target).parent();
@@ -88,11 +85,11 @@ $(document).ready(function(e) {
     }
   });
 
-  $('#example4 form').autovalidator('register', {
+  $('form#example5').autovalidator('register', {
     name: "server_check",
-    selector: "#server-validated",
+    selector: "#artist-name",
     onSubmit: false,
-    message: "cannot find ${name} '${val}' amongst Yahoo artists",
+    message: "cannot find ${name} '${val}'",
     test: function(element) {
       var val = element.val(),
         self = this,
@@ -115,10 +112,18 @@ $(document).ready(function(e) {
     }
   });
 
+  $('form#example6').autovalidator({
+    change: function(event, validator) {
+      var container = $(event.target).parent();
+      container.removeClass('invalid').removeClass('valid').removeClass('loading').addClass(event.status);
+      container.find('.errors').html(event.status == "loading" ? "loading..." : event.message || "");
+    }
+  });
+  
   $('form').submit(function(e) {
     e.preventDefault();
     if ($(this).data('autovalidator').validate()) {
-      alert("SUBMIT!");
+      alert("Form was submitted successfully!");
     }
     return false;
   });
